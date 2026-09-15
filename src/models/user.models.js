@@ -71,7 +71,7 @@ userScehma.methods.generateAceesToken = async function(){
 )
 }
 userScehma.methods.generateRefreshToken =  async function(){
-     return  await jwt.sign(
+    return await jwt.sign(
     {
         _id: this._id,
         email: this.email,
