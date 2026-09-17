@@ -5,11 +5,11 @@ import { app } from "./aap.js";
 dotenv.config({
     path: './env'
 })
-const port = process.env.PORT | 8000
+const port = process.env.PORT || 8000
 connectDB()
 .then(()=>{
    app.listen(port,()=>{
-       console.log(`server is running at port : localhost:${process.env.PORT}`);
+       console.log(`server is running at port : localhost:${port}`);
    })
 })
 .catch ((err)=>{
