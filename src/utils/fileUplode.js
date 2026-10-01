@@ -12,19 +12,18 @@ const uplodeOnClodinary = async (localFilePath) => {
      try {
           if (!localFilePath) return null
 
-          // uplode the file on cloudinary
+          
           const responce = await cloudinary.uploader.upload(localFilePath, {
                resource_type: "auto"
           })
           // console.log("file has been uploaded succ", responce.url);
           // console.log(responce);
           fs.unlinkSync(localFilePath)
-          return responce;
+          return responce;  
      }
-     //  file has been uploaded succ
+   
      catch (error) {
-          fs.unlinkSync(localFilePath)  // remove the locallu saved temporary as the upload operation got failed
-          return null;
+          fs.unlinkSync(localFilePath)  
      }
 }
 

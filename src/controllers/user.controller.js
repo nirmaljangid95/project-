@@ -53,12 +53,13 @@ const registerUser = asyncHandler(async (req, res) => {
     if (existedUser) {
         throw new ApiError(409, "User whith email or username already exists")
     }
+    // console.log(file)
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
-    let coverImageLocalPath;
-    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        coverImageLocalPath = req.files.coverImage[0].path
-    }
+    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // let coverImageLocalPath;
+    // if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    //     coverImageLocalPath = req.files.coverImage[0].path
+    // }
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is reqired")
     }
@@ -103,7 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.findOne({
-        $or: [{ username, email }]
+        $or: [{ username }, { email }]
     })
     if (!user) {
         throw new ApiError(404, "user does not exist")
@@ -231,9 +232,15 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 })
 
 const getCurrentUser = asyncHandler(async (req, res) => {
+
+    if (!req.user) {
+        throw new ApiError(401, "user not found");
+    }
+
+    console.log("nirmal janig sdj ");
     return res
         .status(200)
-        .json(200, req.user, "current user fetched successfully")
+        .json(new ApiResponse(200, req.user, "current user fetched successfully"))
 })
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
@@ -306,6 +313,71 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     return res.status(200)
         .json(new ApiResponse(200, user, "image update successfully"))
 })
+
+const getUserChanelProfile = asyncHandler(async (req, res) => {
+    const { username } = req.params
+    if (!username?.trim()) {
+        throw new ApiError(400, "username is missing")
+    }
+    const channel = await User.aggregate([
+        {
+            $match: {
+                username: username?.toLowerCase()
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localfield: "_id",
+                foreignField: "subscriber",
+                as: "subscribedTo"
+            }
+        },
+        {
+            $addFields: {
+                subscribersCount: {
+                    $size: "$subscribers"
+                },
+                channelSubscribedToCount: {
+                    $size: "$subscribedTo"
+                },
+                isSubscribed: {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$subscribers.subscriber"] }, then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                fullName: 1,
+                username: 1,
+                email: 1,
+                coverImage: 1,
+                avatar: 1,
+                channelSubscribedToCount: 1,
+                subscribersCount: 1
+            }
+        }
+    ])
+    if (!channel?.length) {
+        throw new ApiError(401, "channel does not exists")
+    }
+    return res.status(200)
+        .json(
+            new ApiResponse(200, channel[0], "user channel fatch successfully")
+        )
+
+})
 export {
     registerUser,
     loginUser,
@@ -315,5 +387,6 @@ export {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
-    updateUserCoverImage
+    updateUserCoverImage,
+    getUserChanelProfile
 }
