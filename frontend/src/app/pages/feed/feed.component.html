@@ -1,0 +1,31 @@
+<div class="feed">
+  <header class="mobile-top">
+    <h1>Glimpic</h1>
+  </header>
+
+  @if (error()) {
+  <div class="empty">{{ error() }}</div>
+  }
+
+  @if (loading() && videos().length === 0) {
+  <div class="skel"></div>
+  <div class="skel"></div>
+  }
+
+  @for (video of videos(); track video._id) {
+  <app-video-card [video]="video" />
+  } @empty {
+  @if (!loading() && !error()) {
+  <div class="empty">
+    <h2>No posts yet</h2>
+    <p>Upload a video and publish it to see it here.</p>
+  </div>
+  }
+  }
+
+  @if (hasMore()) {
+  <button type="button" class="btn-primary more" (click)="loadMore()" [disabled]="loading()">
+    {{ loading() ? 'Loading…' : 'Load more' }}
+  </button>
+  }
+</div>

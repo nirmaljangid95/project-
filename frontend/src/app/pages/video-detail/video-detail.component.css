@@ -1,0 +1,171 @@
+.detail {
+  width: 100%;
+  height: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.35s ease;
+}
+
+.player-wrap {
+  background: #000;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+}
+
+.player {
+  width: 600px;
+  max-height: 90vh;
+}
+
+.panel {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 70vh;
+  max-width: 80vw;
+  overflow: auto;
+}
+
+.owner-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.9rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+}
+
+.follow {
+  width: auto;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.follow.following {
+  background: #efefef;
+  color: var(--text);
+}
+
+.c-avatar img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+
+  button.liked {
+    color: var(--like);
+    font-weight: 600;
+  }
+}
+
+h2 {
+  font-size: 1.05rem;
+}
+
+.desc {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.comments {
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  flex: 1;
+
+  h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.65rem;
+  }
+}
+
+.compose {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+}
+
+ul li {
+  display: flex;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.9rem;
+
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  strong {
+    margin-right: 0.35rem;
+  }
+
+  &.muted {
+    color: var(--muted);
+  }
+}
+
+.hint {
+  text-align: center;
+  color: var(--muted);
+  padding: 3rem;
+}
+
+@media (max-width: 800px) {
+  .detail {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    max-height: none;
+  }
+}

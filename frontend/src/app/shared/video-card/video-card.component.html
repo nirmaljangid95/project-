@@ -1,0 +1,55 @@
+<article class="post">
+  <header class="post-header">
+    @if (canOpenProfile) {
+      <a [routerLink]="['/profile', ownerName]" class="user">
+        <img [src]="ownerAvatar" [alt]="ownerName" />
+        <div>
+          <strong>{{ ownerName }}</strong>
+          <span>{{ timeAgo(video.createdAt) }}</span>
+        </div>
+      </a>
+    } @else {
+      <div class="user">
+        <img [src]="ownerAvatar" alt="user" />
+        <div>
+          <strong>user</strong>
+          <span>{{ timeAgo(video.createdAt) }}</span>
+        </div>
+      </div>
+    }
+  </header>
+
+  <a [routerLink]="['/video', video._id]" class="media">
+    <img [src]="thumb" [alt]="video.title" />
+    <span class="play">▶</span>
+  </a>
+
+  <div class="actions">
+    <button type="button" (click)="toggleLike()" [class.liked]="likedLocal()" [class.pop]="heartAnim()" aria-label="Like">
+      <svg viewBox="0 0 24 24" width="26" height="26">
+        <path
+          [attr.fill]="likedLocal() ? 'var(--like)' : 'none'"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M12 21s-7-4.5-9.5-8.5C.5 9 2.5 5 6.5 5c2 0 3.5 1.2 4.5 2.5C12 6.2 13.5 5 15.5 5c4 0 6 4 4 7.5C19 16.5 12 21 12 21Z"
+        />
+      </svg>
+    </button>
+    <a [routerLink]="['/video', video._id]" aria-label="Comment">
+      <svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="2" d="M20 12a8 8 0 0 1-8 8H6l-3 3V12a8 8 0 1 1 17 0Z"/></svg>
+    </a>
+  </div>
+
+  <div class="meta">
+    <p class="views">{{ video.views || 0 }} views</p>
+    <p class="caption">
+      @if (canOpenProfile) {
+        <a [routerLink]="['/profile', ownerName]"><strong>{{ ownerName }}</strong></a>
+      }
+      {{ video.title }}
+    </p>
+    @if (video.description) {
+      <p class="desc">{{ video.description }}</p>
+    }
+  </div>
+</article>

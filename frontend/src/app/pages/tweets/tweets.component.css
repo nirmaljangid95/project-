@@ -1,0 +1,319 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 100dvh;
+  color: #111;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.tweets {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 28px clamp(16px, 3vw, 48px);
+}
+
+/* Heading */
+.tweets h1 {
+  margin: 0 0 6px;
+  font-size: 1.65rem;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.tweets .sub {
+  margin: 0 0 24px;
+  color: #737373;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+/* Compose tweet */
+.compose {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 0 18px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+}
+
+.compose img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.compose textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 76px;
+  padding: 4px 0;
+  border: none;
+  outline: none;
+  resize: vertical;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.compose textarea::placeholder {
+  color: #858585;
+}
+
+.compose textarea:focus {
+  outline: none;
+}
+
+.compose .btn-primary {
+  grid-column: 2;
+  justify-self: end;
+  min-width: 88px;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 11px;
+  background: #70c5f7;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.compose .btn-primary:hover:not(:disabled) {
+  background: #36aaf0;
+  transform: translateY(-1px);
+}
+
+.compose .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tweet list */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  width: 100%;
+  min-width: 0;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+  animation: fadeUp 0.25s ease;
+}
+
+.list li>img {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.body .top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 7px;
+}
+
+.body .top strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: #151515;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.body .top span {
+  color: #858585;
+  font-size: 0.84rem;
+}
+
+.body p {
+  margin: 0 0 12px;
+  color: #292929;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.body .row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.body .row button {
+  padding: 3px 0;
+  border: none;
+  background: transparent;
+  color: #383838;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.body .row button:hover {
+  color: #269fe8;
+}
+
+.body .row .del:hover {
+  color: #e53945;
+}
+
+/* Loading, empty state and errors */
+.hint,
+.err {
+  width: 100%;
+  max-width: 760px;
+  padding: 18px;
+  color: #777;
+  text-align: center;
+}
+
+.err {
+  color: #d32f2f;
+  overflow-wrap: anywhere;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .tweets {
+    padding: 24px;
+  }
+
+  .tweets h1 {
+    font-size: 1.5rem;
+  }
+
+  .compose,
+  .list,
+  .hint,
+  .err {
+    max-width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .tweets {
+    min-height: 100dvh;
+    padding: 18px 12px 28px;
+  }
+
+  .tweets h1 {
+    font-size: 1.4rem;
+  }
+
+  .tweets .sub {
+    margin-bottom: 18px;
+    font-size: 0.88rem;
+  }
+
+  .compose {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px;
+    padding: 13px;
+    border-radius: 13px;
+  }
+
+  .compose img,
+  .list li>img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .compose textarea {
+    min-height: 68px;
+    font-size: 0.94rem;
+  }
+
+  .compose .btn-primary {
+    min-height: 40px;
+    padding: 9px 18px;
+  }
+
+  .list {
+    gap: 10px;
+  }
+
+  .list li {
+    gap: 10px;
+    padding: 13px;
+    border-radius: 13px;
+  }
+
+  .body .top strong,
+  .body p {
+    font-size: 0.92rem;
+  }
+
+  .body .row {
+    gap: 16px;
+  }
+
+  .body .row button {
+    font-size: 0.84rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,41 @@
+<div class="upload">
+  <h1>Create new post</h1>
+  <p class="sub">Share a video with your followers</p>
+
+  @if (error()) {
+    <div class="alert error">{{ error() }}</div>
+  }
+  @if (success()) {
+    <div class="alert ok">
+      {{ success() }}
+      @if (uploadedId()) {
+        <button type="button" class="btn-primary" (click)="publishNow()">Publish now</button>
+      }
+    </div>
+  }
+
+  <form (ngSubmit)="submit()">
+    <label class="drop">
+      <input type="file" accept="video/*" (change)="onVideo($event)" hidden />
+      @if (videoFile) {
+        <span>{{ videoFile.name }}</span>
+      } @else {
+        <span>Select video file</span>
+      }
+    </label>
+
+    <label class="drop thumb" [style.background-image]="thumbPreview ? 'url(' + thumbPreview + ')' : null">
+      <input type="file" accept="image/*" (change)="onThumb($event)" hidden />
+      @if (!thumbPreview) {
+        <span>Select thumbnail</span>
+      }
+    </label>
+
+    <input type="text" [(ngModel)]="title" name="title" placeholder="Title" required />
+    <textarea [(ngModel)]="description" name="description" placeholder="Write a caption…" rows="4" required></textarea>
+
+    <button class="btn-primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Uploading…' : 'Share' }}
+    </button>
+  </form>
+</div>

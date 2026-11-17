@@ -1,0 +1,69 @@
+@if (loading()) {
+<p class="hint">Loading…</p>
+} @else {
+@if (video(); as v) {
+<div class="detail">
+  <div class="player-wrap">
+    <video class="player" [src]="mediaUrl(v.videoFile)" [poster]="mediaUrl(v.thumbnail)" controls playsinline></video>
+  </div>
+
+  <div class="panel">
+    <div class="owner-row">
+      @if (owner; as o) {
+      <a [routerLink]="['/profile', o.username]" class="owner">
+        <img [src]="avatarUrl(o)" [alt]="o.username" />
+        <div>
+          <strong>{{ o.username }}</strong>
+          <span>{{ o.fullName }}</span>
+        </div>
+      </a>
+      @if (auth.currentUser()?._id !== o._id) {
+      <button type="button" class="btn-primary follow" [class.following]="isSubscribed()" [disabled]="followLoading()"
+        (click)="toggleFollow()">
+        {{ isSubscribed() ? 'Following' : 'Follow' }}
+      </button>
+      }
+      }
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="toggleLike()" [class.liked]="liked()">
+        {{ liked() ? '♥ Liked' : '♡ Like' }}
+      </button>
+      <span>{{ v.views || 0 }} views</span>
+    </div>
+
+    <h2>{{ v.title }}</h2>
+    <p class="desc">{{ v.description }}</p>
+
+    <div class="comments">
+      <h3>Comments</h3>
+      <form class="compose" (ngSubmit)="postComment()">
+        <input [(ngModel)]="commentText" name="comment" placeholder="Add a comment…" />
+        <button type="submit" class="btn-ghost" [disabled]="!commentText.trim()">Post</button>
+      </form>
+
+      <ul>
+        @for (c of comments(); track c._id) {
+        <li>
+          <a [routerLink]="['/profile', c.owner.username]" class="c-avatar">
+            <img [src]="commentAvatar(c)" [alt]="c.owner.username" />
+          </a>
+          <div>
+            <a [routerLink]="['/profile', c.owner.username]">
+              <strong>{{ c.owner.username }}</strong>
+            </a>
+            <span>{{ c.content }}</span>
+          </div>
+        </li>
+        } @empty {
+        <li class="muted">No comments yet</li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+} @else {
+<p class="hint">Video not found</p>
+}
+}

@@ -1,0 +1,43 @@
+<div class="tweets">
+  <h1>Tweets</h1>
+  <p class="sub">Share a quick thought — Instagram-style notes</p>
+
+  <form class="compose" (ngSubmit)="post()">
+    @if (auth.currentUser()?.avatar) {
+      <img [src]="auth.currentUser()!.avatar" alt="" />
+    }
+    <textarea [(ngModel)]="content" name="content" placeholder="What's on your mind?" rows="3" maxlength="280"></textarea>
+    <button class="btn-primary" type="submit" [disabled]="!content.trim()">Post</button>
+  </form>
+
+  @if (error()) {
+    <p class="err">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="hint">Loading…</p>
+  }
+
+  <ul class="list">
+    @for (t of tweets(); track t._id) {
+      <li>
+        <img [src]="ownerOf(t)?.avatar" [alt]="ownerOf(t)?.username" />
+        <div class="body">
+          <div class="top">
+            <strong>{{ ownerOf(t)?.username }}</strong>
+            <span>{{ timeAgo(t.createdAt) }}</span>
+          </div>
+          <p>{{ t.content }}</p>
+          <div class="row">
+            <button type="button" (click)="likeTweet(t._id)">♡ Like</button>
+            <button type="button" class="del" (click)="deleteTweet(t._id)">Delete</button>
+          </div>
+        </div>
+      </li>
+    } @empty {
+      @if (!loading()) {
+        <li class="hint">No tweets yet — post your first one!</li>
+      }
+    }
+  </ul>
+</div>

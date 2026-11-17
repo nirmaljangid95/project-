@@ -1,0 +1,115 @@
+<div class="auth-page">
+  <div class="auth-visual" aria-hidden="true">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="story-row">
+          <span class="story"></span>
+          <span class="story"></span>
+          <span class="story"></span>
+          <span class="story"></span>
+        </div>
+        <div class="mock-post">
+          <div class="mock-header"></div>
+          <div class="mock-media"></div>
+          <div class="mock-actions"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-panel">
+    <div class="card form-card">
+      <h1 class="brand">Glimpic</h1>
+      <p class="tagline">Share moments. Watch. Connect.</p>
+
+      <div class="toggle">
+        <button
+          type="button"
+          [class.active]="mode() === 'login'"
+          (click)="mode.set('login'); error.set(''); success.set('')"
+        >
+          Log in
+        </button>
+        <button
+          type="button"
+          [class.active]="mode() === 'register'"
+          (click)="mode.set('register'); error.set(''); success.set('')"
+        >
+          Sign up
+        </button>
+        <span class="toggle-pill" [class.register]="mode() === 'register'"></span>
+      </div>
+
+      @if (error()) {
+        <div class="alert error">{{ error() }}</div>
+      }
+      @if (success()) {
+        <div class="alert ok">{{ success() }}</div>
+      }
+
+      @if (mode() === 'login') {
+        <form class="form" (ngSubmit)="submitLogin()" autocomplete="on">
+          <input
+            type="text"
+            [(ngModel)]="loginId"
+            name="loginId"
+            placeholder="Username or email"
+            required
+          />
+          <input
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <button class="btn-primary" type="submit" [disabled]="loading()">
+            {{ loading() ? 'Logging in…' : 'Log in' }}
+          </button>
+        </form>
+      } @else {
+        <form class="form" (ngSubmit)="submitRegister()">
+          <div class="avatar-pick" [style.background-image]="avatarPreview ? 'url(' + avatarPreview + ')' : null">
+            <label>
+              <input type="file" accept="image/*" (change)="onAvatarChange($event)" hidden />
+              {{ avatarPreview ? 'Change' : 'Add avatar' }}
+            </label>
+          </div>
+
+          <div class="cover-pick">
+            <label>
+              <input type="file" accept="image/*" (change)="onCoverChange($event)" hidden />
+              @if (coverPreview) {
+                <img [src]="coverPreview" alt="Cover preview" />
+              } @else {
+                <span>Optional cover image</span>
+              }
+            </label>
+          </div>
+
+          <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Full name" required />
+          <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required />
+          <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            [(ngModel)]="regPassword"
+            name="regPassword"
+            placeholder="Password"
+            required
+          />
+          <button class="btn-primary" type="submit" [disabled]="loading()">
+            {{ loading() ? 'Creating…' : 'Sign up' }}
+          </button>
+        </form>
+      }
+    </div>
+
+    <div class="card switch-card">
+      @if (mode() === 'login') {
+        <p>Don't have an account? <button type="button" class="btn-ghost" (click)="toggleMode()">Sign up</button></p>
+      } @else {
+        <p>Have an account? <button type="button" class="btn-ghost" (click)="toggleMode()">Log in</button></p>
+      }
+    </div>
+  </div>
+</div>

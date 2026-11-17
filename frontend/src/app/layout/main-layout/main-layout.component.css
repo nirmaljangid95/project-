@@ -1,0 +1,34 @@
+.shell {
+  display: grid;
+  grid-template-columns: var(--nav-width) 1fr;
+  min-height: 100vh;
+}
+
+.content {
+  min-width: 0;
+  padding: 1.5rem 1rem 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    display: none;
+  }
+
+  .bottom {
+    display: block;
+  }
+
+  .content {
+    padding: 0.75rem 0 4.5rem;
+  }
+}

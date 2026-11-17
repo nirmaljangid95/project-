@@ -1,0 +1,46 @@
+<aside class="nav">
+  <a routerLink="/" class="logo">Glimpic</a>
+
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor"
+          d="M9.005 16.545a2.997 2.997 0 0 1 2.997-2.997A2.997 2.997 0 0 1 15 16.545V22h7V11.543L12 2 2 11.543V22h7.005Z" />
+      </svg>
+      Home
+    </a>
+    <a routerLink="/explore" routerLinkActive="active">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor" d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5ZM16.5 16.5 22 22" />
+      </svg>
+      Explore
+    </a>
+    <a routerLink="/tweets" routerLinkActive="active">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor"
+          d="M12 2.5a5.5 5.5 0 0 1 5.5 5.5v.5h1.5A2.5 2.5 0 0 1 21.5 11v8A2.5 2.5 0 0 1 19 21.5H5A2.5 2.5 0 0 1 2.5 19v-8A2.5 2.5 0 0 1 5 8.5h1.5V8A5.5 5.5 0 0 1 12 2.5Zm0 2A3.5 3.5 0 0 0 8.5 8v.5h7V8A3.5 3.5 0 0 0 12 4.5Z" />
+      </svg>
+      Tweets
+    </a>
+    <a routerLink="/upload" routerLinkActive="active">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor"
+          d="M12 2a1 1 0 0 1 1 1v8h8a1 1 0 1 1 0 2h-8v8a1 1 0 1 1-2 0v-8H3a1 1 0 1 1 0-2h8V3a1 1 0 0 1 1-1Z" />
+      </svg>
+      Create
+    </a>
+    <a routerLink="/profile" routerLinkActive="active">
+      @if (auth.currentUser()?.avatar) {
+      <img class="avatar" [src]="auth.currentUser()!.avatar" alt="" />
+      } @else {
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <circle cx="12" cy="8" r="4" fill="currentColor" />
+        <path fill="currentColor" d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+      </svg>
+      }
+      Profile
+    </a>
+  </nav>
+
+  <button type="button" class="logout" (click)="logout()">Log out</button>
+</aside>

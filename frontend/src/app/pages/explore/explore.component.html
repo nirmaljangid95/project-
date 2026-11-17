@@ -1,0 +1,23 @@
+<div class="explore">
+  <form class="search" (ngSubmit)="search()">
+    <input type="search" [(ngModel)]="query" name="query" placeholder="Search videos…" />
+    <button type="submit" class="btn-primary">Search</button>
+  </form>
+
+  @if (loading()) {
+    <p class="hint">Searching…</p>
+  }
+
+  <div class="grid">
+    @for (v of videos(); track v._id) {
+      <a class="cell" [routerLink]="['/video', v._id]">
+        <img [src]="mediaUrl(v.thumbnail)" [alt]="v.title" />
+        <span class="overlay">{{ v.views || 0 }} views</span>
+      </a>
+    } @empty {
+      @if (!loading()) {
+        <p class="hint">No videos found</p>
+      }
+    }
+  </div>
+</div>

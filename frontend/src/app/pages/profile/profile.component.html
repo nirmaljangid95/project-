@@ -1,0 +1,97 @@
+@if (profile(); as p) {
+  <div class="profile">
+    <div
+      class="cover"
+      [style.background-image]="mediaUrl(p.coverImage) ? 'url(' + mediaUrl(p.coverImage) + ')' : null"
+    ></div>
+
+    <div class="header">
+      <img class="avatar" [src]="avatarUrl(p)" [alt]="p.username" />
+      <div class="info">
+        <div class="row">
+          <h1>{{ p.username }}</h1>
+          @if (isOwn()) {
+            <button type="button" class="outline" (click)="logout()">Log out</button>
+          } @else {
+            <button
+              type="button"
+              class="btn-primary follow"
+              [class.following]="p.isSubscribed"
+              [disabled]="followLoading()"
+              (click)="toggleSubscribe()"
+            >
+              @if (followLoading()) {
+                …
+              } @else {
+                {{ p.isSubscribed ? 'Following' : 'Follow' }}
+              }
+            </button>
+          }
+        </div>
+        <ul class="stats">
+          <li>
+            <strong>{{ videos().length }}</strong>
+            <span>posts</span>
+          </li>
+          <li>
+            <strong>{{ p.subscribersCount ?? 0 }}</strong>
+            <span>followers</span>
+          </li>
+          <li>
+            <strong>{{ followingCount(p) }}</strong>
+            <span>following</span>
+          </li>
+        </ul>
+        <p class="name">{{ p.fullName }}</p>
+      </div>
+    </div>
+
+    @if (error()) {
+      <p class="err">{{ error() }}</p>
+    }
+
+    <div class="tabs">
+      <button type="button" [class.active]="activeTab() === 'videos'" (click)="setTab('videos')">
+        Videos
+      </button>
+      <button type="button" [class.active]="activeTab() === 'tweets'" (click)="setTab('tweets')">
+        Tweets
+      </button>
+    </div>
+
+    @if (loading()) {
+      <p class="hint">Loading…</p>
+    } @else if (activeTab() === 'videos') {
+      <div class="grid">
+        @for (v of videos(); track v._id) {
+          <a [routerLink]="['/video', v._id]" class="cell">
+            <img [src]="mediaUrl(v.thumbnail)" [alt]="v.title" />
+          </a>
+        } @empty {
+          <p class="hint">No videos yet</p>
+        }
+      </div>
+    } @else {
+      <ul class="tweet-list">
+        @for (t of tweets(); track t._id) {
+          <li>
+            <img [src]="avatarUrl(t.owner || p)" [alt]="(t.owner?.username || p.username)" />
+            <div>
+              <div class="tweet-top">
+                <strong>{{ t.owner?.username || p.username }}</strong>
+                <span>{{ timeAgo(t.createdAt) }}</span>
+              </div>
+              <p>{{ t.content }}</p>
+            </div>
+          </li>
+        } @empty {
+          <p class="hint">No tweets yet. Create one from the Tweets page.</p>
+        }
+      </ul>
+    }
+  </div>
+} @else if (loading()) {
+  <p class="hint">Loading profile…</p>
+} @else {
+  <p class="hint">{{ error() || 'Profile not found' }}</p>
+}
